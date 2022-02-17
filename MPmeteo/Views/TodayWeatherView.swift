@@ -25,6 +25,8 @@ struct TodayWeatherView: View {
                         .font(.system(size: 42))
                         
                     Text("\(cityVM.conditions)")
+                    
+                    Text("Ressenti \(cityVM.feelsLike)°")
                 }
             }
             

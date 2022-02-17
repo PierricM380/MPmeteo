@@ -26,8 +26,12 @@ struct DailyWeatherView: View {
             
             Spacer()
             
-            Text("Max. \(cityVM.getTempFor(temp: weather.temp.max))°\nMin. \(cityVM.getTempFor(temp: weather.temp.min))°")
-                .frame(width: 150)
+            VStack {
+                Text("Max. \(cityVM.getTempFor(temp: weather.temp.max))°")
+                    
+                Text("Min. \(cityVM.getTempFor(temp: weather.temp.min))°")
+            }
+            .frame(width: 150)
             
             Spacer()
             

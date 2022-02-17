@@ -61,13 +61,17 @@ final class CityViewViewModel: ObservableObject {
     
     var conditions: String {
         if weather.current.weather.count > 0 {
-            return weather.current.weather[0].description
+            return weather.current.weather[0].description.capitalized
         }
         return ""
     }
     
+    var feelsLike: String {
+        return String(format: "%0.0f", weather.current.feels_like)
+    }
+    
     var windSpeed: String {
-        return String(format: "%0.1f", weather.current.wind_speed * 3.6)
+        return String(format: "%0.0f", weather.current.wind_speed * 3.6)
     }
     
     var humidity: String {
@@ -85,9 +89,9 @@ final class CityViewViewModel: ObservableObject {
     func getTimeFor(timestamp: Int) -> String {
         return timeFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(timestamp)))
     }
-    // Make one value after dot (15.5°C)
+    //
     func getTempFor(temp: Double) -> String {
-        return String(format: "%0.1f", temp)
+        return String(format: "%0.0f", temp)
     }
     //
     func getDayFor(timestamp: Int) -> String {
@@ -133,6 +137,8 @@ final class CityViewViewModel: ObservableObject {
             return Image("01n")
         case "02d":
             return Image("02d")
+        case "02n":
+            return Image("02n")
         case "03d":
             return Image("03d")
         case "03n":
@@ -162,7 +168,7 @@ final class CityViewViewModel: ObservableObject {
         case "50n":
             return Image("50n")
         default:
-            return Image(systemName: "sun.max.fill")
+            return Image(systemName: "questionmark.circle.fill")
         }
     }
 }

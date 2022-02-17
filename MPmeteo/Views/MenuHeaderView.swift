@@ -19,6 +19,7 @@ struct MenuHeaderView: View {
             
             Button{
                 cityVM.city = searchTerm
+                hideKeyboard()
             } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
@@ -40,9 +41,15 @@ struct MenuHeaderView: View {
     }
 }
 
+extension View {
+    func hideKeyboard() {
+        let resign = #selector(UIResponder.resignFirstResponder)
+        UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
+    }
+}
+
 struct MenuHeaderView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .preferredColorScheme(.dark)
     }
 }

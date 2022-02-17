@@ -22,7 +22,7 @@ struct Weather: Codable, Identifiable {
     enum codingKey: String {
         case dt
         case temp
-        case feel_like
+        case feels_like
         case pressure
         case humidity
         case dew_point

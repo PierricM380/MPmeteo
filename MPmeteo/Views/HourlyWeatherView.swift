@@ -15,7 +15,7 @@ struct HourlyWeatherView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
                 ForEach(cityVM.weather.hourly) { weather in
-                    let icon = cityVM.getWeatherIconFor(icon: weather.weather.count > 0 ? weather.weather[0].icon : "sun.max.fill")
+                    let icon = cityVM.getWeatherIconFor(icon: weather.weather.count > 0 ? weather.weather[0].icon : "questionmark.circle.fill")
                     let hour = cityVM.getTimeFor(timestamp: weather.dt)
                     let temp = "\(cityVM.getTempFor(temp: weather.temp))°"
                     getHourlyView(hour: hour, image: icon, temp: temp)
@@ -25,13 +25,13 @@ struct HourlyWeatherView: View {
     }
     
     private func getHourlyView(hour: String, image: Image, temp: String) -> some View {
-        VStack(spacing: 10) {
-            Text(hour)
+        VStack(spacing: 5) {
+            Text("\(hour)h")
             image
                 .foregroundColor(Color("Color3"))
             Text(temp)
         }
-        .frame(width: 75, height: 125)
+        .frame(width: 75, height: 110)
         .foregroundColor(Color("Color3"))
         .background(RoundedRectangle(cornerRadius: 20).fill(LinearGradient(gradient: Gradient(colors: [Color("Color1"), Color("Color2")]), startPoint: .top, endPoint: .bottom)).opacity(0.3))
         .shadow(color: Color.white.opacity(0.1), radius: 2, x: -2, y: -2)

@@ -15,7 +15,7 @@ struct CityNameView: View {
     var body: some View {
         HStack {
             VStack(alignment: .center, spacing: 10) {
-                Text(city)
+                Text(city.capitalized)
                     .font(.title)
                     .bold()
                 
