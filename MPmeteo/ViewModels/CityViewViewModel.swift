@@ -17,7 +17,7 @@ final class CityViewViewModel: ObservableObject {
             getLocation()
         }
     }
-    // Date, day, hours formatters
+    
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .full
@@ -52,7 +52,7 @@ final class CityViewViewModel: ObservableObject {
         if weather.current.weather.count > 0 {
             return weather.current.weather[0].icon
         }
-        return "sun.max.fill"
+        return "questionmark.circle.fill"
     }
     
     var temperature: String {
