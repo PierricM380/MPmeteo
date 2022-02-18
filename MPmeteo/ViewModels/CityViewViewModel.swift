@@ -18,6 +18,42 @@ final class CityViewViewModel: ObservableObject {
         }
     }
     
+    init() {
+        // get location
+        getLocation()
+    }
+    
+    private func getLocation() {
+        CLGeocoder().geocodeAddressString(city) { (placemarks, error) in
+            if let places = placemarks, let place = places.first {
+                self.getWeather(coord: place.location?.coordinate)
+            }
+        }
+    }
+    
+    private func getWeather(coord: CLLocationCoordinate2D?) {
+        if let coord = coord {
+            let urlString = API.getUrlFor(lat: coord.latitude, lon: coord.longitude)
+            getWeatherInterval(city: city, for: urlString)
+        } else {
+            let urlString = API.getUrlFor(lat: 48.856614, lon: 2.3522219)
+            getWeatherInterval(city: city, for: urlString)
+        }
+    }
+    
+    private func getWeatherInterval(city: String, for urlString: String) {
+        NetworkManager<WeatherResponse>.fetch(for: URL(string: urlString)!) { (result) in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.weather = response
+                }
+            case .failure(let err):
+                print(err)
+            }
+        }
+    }
+    
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .full
@@ -39,10 +75,6 @@ final class CityViewViewModel: ObservableObject {
         return formatter
     }()
     
-    init() {
-        // get location
-        getLocation()
-    }
     // Perform date into string since interval
     var date: String {
         return dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(weather.current.dt)))
@@ -96,37 +128,6 @@ final class CityViewViewModel: ObservableObject {
     //
     func getDayFor(timestamp: Int) -> String {
         return dayFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(timestamp)))
-    }
-    
-    private func getLocation() {
-        CLGeocoder().geocodeAddressString(city) { (placemarks, error) in
-            if let places = placemarks, let place = places.first {
-                self.getWeather(coord: place.location?.coordinate)
-            }
-        }
-    }
-    
-    private func getWeather(coord: CLLocationCoordinate2D?) {
-        if let coord = coord {
-            let urlString = API.getUrlFor(lat: coord.latitude, lon: coord.longitude)
-            getWeatherInterval(city: city, for: urlString)
-        } else {
-            let urlString = API.getUrlFor(lat: 48.856614, lon: 48.856614)
-            getWeatherInterval(city: city, for: urlString)
-        }
-    }
-    
-    private func getWeatherInterval(city: String, for urlString: String) {
-        NetworkManager<WeatherResponse>.fetch(for: URL(string: urlString)!) { (result) in
-            switch result {
-            case .success(let response):
-                DispatchQueue.main.async {
-                    self.weather = response
-                }
-            case .failure(let err):
-                print(err)
-            }
-        }
     }
     
     func getWeatherIconFor(icon: String) -> Image {
